@@ -1,8 +1,5 @@
-
----@class sh_gravity : sh_base
+---@class sledgehammer_gravity : sledgehammer.Base
 local ENT = ENT
-
-ENT.Base = "sh_base"
 
 function ENT:Initialize()
     self.m_vDirection = Vector( 0, 0, -1 )
@@ -11,13 +8,13 @@ function ENT:Initialize()
 end
 
 function ENT:Apply()
-    physenv.SetGravity( self.m_vDirection * ( self.m_vForce or cvars.Number( "sv_gravity", 600 ) ) )
+    physenv.SetGravity( self.m_vDirection * (self.m_vForce or cvars.Number( "sv_gravity", 600 )) )
 end
 
 function ENT:InDirection( activator, _, value )
     local x, y, z = string.match( value, "^(%-?%d*%.?%d*)%s*(%-?%d*%.?%d*)%s*(%-?%d*%.?%d*)$" )
     self.m_vDirection = Vector( tonumber( x or 0, 10 ) or 0, tonumber( y or 0, 10 ) or 0, tonumber( z or 0, 10 ) or 0 )
-    self:ConsoleMessage( "debug", "Gravity direction set to %s", self.m_vDirection  )
+    self:ConsoleMessage( "debug", "Gravity direction set to %s", self.m_vDirection )
     self:Apply()
 end
 
