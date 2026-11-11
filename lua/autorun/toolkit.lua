@@ -269,6 +269,15 @@ local function register_entity( tbl, class_name )
 
     finalize_entity( tbl )
 
+    -- Ensure Type/Base are concrete strings before Register (map spawn uses GetType).
+    if tbl.Type == nil then
+        tbl.Type = SERVER and "point" or "anim"
+    end
+
+    if not std.isString( tbl.Base ) then
+        tbl.Base = nil
+    end
+
     classes[ class_name ] = true
 
     if tbl.Editor ~= nil then
@@ -276,6 +285,14 @@ local function register_entity( tbl, class_name )
     end
 
     scripted_ents.Register( tbl, class_name )
+
+    -- Autorun runs before scripted_ents.OnLoaded in some paths; set baseclass eagerly
+    -- so Hammer/map CreateEntityByName can resolve the SENT immediately.
+    local built = scripted_ents.Get( class_name )
+    if built ~= nil then
+        baseclass.Set( class_name, built )
+    end
+
     logger:info( "Registered class: " .. class_name )
 end
 
@@ -328,6 +345,10 @@ local function reload_entities()
             if class_name == nil then
                 error( "file name of '" .. file_path .. "' corrupted" )
             end
+
+            -- if SERVER then
+            --     AddCSLuaFile( file_path )
+            -- end
 
             class_name = prefix .. class_name
             local env, tbl = prepare_env( class_name )

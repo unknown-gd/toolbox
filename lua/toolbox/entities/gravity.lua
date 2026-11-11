@@ -1,6 +1,8 @@
 ---@class toolbox_gravity : toolbox.Base
 local ENT = ENT
 
+ENT.Type = "point"
+
 ENT.Editor = {
     title = "Gravity",
     description = "Sets the gravity of the map.",
@@ -49,7 +51,7 @@ function ENT:Apply()
         return
     end
 
-    physenv.SetGravity( direction * ( self.m_vForce or cvars.Number( "sv_gravity", 600 ) ) )
+    physenv.SetGravity( direction * (self.m_vForce or cvars.Number( "sv_gravity", 600 )) )
 end
 
 function ENT:InDirection( _, _, value )
