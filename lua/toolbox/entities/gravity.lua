@@ -36,13 +36,20 @@ ENT.Editor = {
 }
 
 function ENT:Initialize()
-    self.m_vDirection = Vector( 0, 0, -1 )
-    self.m_vForce = nil
+    if self.m_vDirection == nil then
+        self.m_vDirection = Vector( 0, 0, -1 )
+    end
+
     self:Apply()
 end
 
 function ENT:Apply()
-    physenv.SetGravity( self.m_vDirection * (self.m_vForce or cvars.Number( "sv_gravity", 600 )) )
+    local direction = self.m_vDirection
+    if direction == nil then
+        return
+    end
+
+    physenv.SetGravity( direction * ( self.m_vForce or cvars.Number( "sv_gravity", 600 ) ) )
 end
 
 function ENT:InDirection( _, _, value )
@@ -58,9 +65,9 @@ function ENT:InForce( _, _, value )
 end
 
 function ENT:KeyValue_direction( value )
-    self:InDirection( nil, nil, value )
+    self.m_vDirection = self.toVector( tostring( value ), 0, 0, -1 )
 end
 
 function ENT:KeyValue_force( value )
-    self:InForce( nil, nil, value )
+    self.m_vForce = tonumber( value, 10 ) or nil
 end

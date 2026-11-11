@@ -28,15 +28,15 @@ ENT.Editor = {
         }
     },
     inputs = {
-        { name = "InEnable", type = "nil", description = "Enables this voice controller" },
-        { name = "InDisable", type = "nil", description = "Disables this voice controller" },
-        { name = "InBlock", type = "nil", description = "Blocks the activator from being heard (adds to block list)" },
-        { name = "InAllow", type = "nil", description = "Allows the activator to be heard (removes from block / adds to allow)" },
-        { name = "InMute", type = "nil", description = "Mutes the activator for all listeners" },
-        { name = "InUnmute", type = "nil", description = "Unmutes the activator" },
-        { name = "InSetVolume", type = "float", description = "Sets voice volume scale on the activator client" },
-        { name = "InSetMode", type = "integer", description = "Changes filter mode" },
-        { name = "InClear", type = "nil", description = "Clears block/allow/mute lists" }
+        { name = "InEnable",    type = "nil",     description = "Enables this voice controller" },
+        { name = "InDisable",   type = "nil",     description = "Disables this voice controller" },
+        { name = "InBlock",     type = "nil",     description = "Blocks the activator from being heard (adds to block list)" },
+        { name = "InAllow",     type = "nil",     description = "Allows the activator to be heard (removes from block / adds to allow)" },
+        { name = "InMute",      type = "nil",     description = "Mutes the activator for all listeners" },
+        { name = "InUnmute",    type = "nil",     description = "Unmutes the activator" },
+        { name = "InSetVolume", type = "float",   description = "Sets voice volume scale on the activator client" },
+        { name = "InSetMode",   type = "integer", description = "Changes filter mode" },
+        { name = "InClear",     type = "nil",     description = "Clears block/allow/mute lists" }
     }
 }
 
@@ -46,8 +46,11 @@ local handler_count = 0
 
 function ENT:Initialize()
     if self.m_iMode == nil then self.m_iMode = 0 end
+
     if self.m_bEnabled == nil then self.m_bEnabled = true end
+
     if self.m_flVolume == nil then self.m_flVolume = 1 end
+
     ---@type table<Player, boolean>
     self.m_tBlocked = self.m_tBlocked or {}
     ---@type table<Player, boolean>
@@ -153,7 +156,7 @@ local function evaluate( listener, talker )
     for i = 1, handler_count do
         local ent = handlers[ i ]
         if not ent.m_bEnabled then
-            goto continue
+            goto evaluate_loop
         end
 
         if ent.m_tMuted[ talker ] then
@@ -175,7 +178,7 @@ local function evaluate( listener, talker )
             end
         end
 
-        ::continue::
+        ::evaluate_loop::
     end
 
     return nil

@@ -105,7 +105,8 @@ do
     ---@param y? number
     ---@param z? number
     function toolbox.toVector( str, x, y, z )
-        local x_str, y_str, z_str = string_match( str, "^(%-?%d*%.?%d*)[^%d]*(%-?%d*%.?%d*)[^%d]*(%-?%d*%.?%d*)" )
+        -- Separators must not consume '-' or signs on later components are lost ("0 0 -1" -> 0 0 1).
+        local x_str, y_str, z_str = string_match( str, "^(%-?%d*%.?%d*)[^%d%-]*(%-?%d*%.?%d*)[^%d%-]*(%-?%d*%.?%d*)" )
         return Vector(
             raw_tonumber( x_str, 10 ) or x or 0,
             raw_tonumber( y_str, 10 ) or y or 0,
@@ -127,7 +128,7 @@ do
     ---@param pitch? number
     ---@param roll? number
     function toolbox.toAngle( str, yaw, pitch, roll )
-        local p_str, y_str, r_str = string_match( str, "^(%-?%d*%.?%d*)[^%d]*(%-?%d*%.?%d*)[^%d]*(%-?%d*%.?%d*)" )
+        local p_str, y_str, r_str = string_match( str, "^(%-?%d*%.?%d*)[^%d%-]*(%-?%d*%.?%d*)[^%d%-]*(%-?%d*%.?%d*)" )
         return Angle(
             raw_tonumber( p_str, 10 ) or pitch or 0,
             raw_tonumber( y_str, 10 ) or yaw or 0,
