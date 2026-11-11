@@ -1,0 +1,48 @@
+{
+  "languages": {
+    "Lua": {
+      "format_on_save": "on",
+      "formatter": "language_server"
+    }
+  },
+  "lsp": {
+    "lua-language-server": {
+      "settings": {
+        "Lua": {
+          "completion": {
+            "autoRequire": false
+          },
+          "runtime": {
+            "version": "LuaJIT",
+            "special": {
+              "include": "dofile",
+              "IncludeCS": "dofile",
+              "AddCSLuaFile": "dofile"
+            },
+            "nonstandardSymbol": [
+              "!",
+              "!=",
+              "&&",
+              "||",
+              "//",
+              "/**/",
+              "continue"
+            ]
+          },
+          "workspace": {
+            "checkThirdParty": false,
+            "library": [
+              "/home/ukdev/.lib/glua-api-snippets"
+            ]
+          },
+          "diagnostics": {
+            "disable": [
+              "duplicate-set-field",
+              "lowercase-global"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

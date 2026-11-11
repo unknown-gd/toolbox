@@ -1,12 +1,21 @@
-# Sledgehammer
+# ToolBox
 
-A collection of entities that can be used to modify the game in various ways.
+A collection of Hammer-oriented point entities for Garry's Mod map making.
 
-Mostly useful for map making in hummer.
+Requires [dreamwork](https://github.com/unknown-gd/dreamwork) and glua-patches.
+
+## Console
+
+| Command | Realm | Description |
+| --- | --- | --- |
+| `toolbox.server.classes` | server (listen/dedicated console) | List registered entity classes |
+| `toolbox.server.reload` | server (listen/dedicated console) | Reload entity scripts |
+| `toolbox.server.fgd` | server (listen/dedicated console) | Write `data/toolbox.fgd.txt` from `ENT.Editor` metadata |
+| `toolbox.client.classes` | client | List registered entity classes |
 
 ## Entities
 
-### `sh_chat`
+### `toolbox_chat`
 
 Chat manipulation entity, allows you to send messages as specific players.
 
@@ -19,7 +28,7 @@ Outputs:
 - `OnMessage` - receive messages from players ( activator: player, value: string )
 - `OnTeamMessage` - receive team messages from players ( activator: player, value: string )
 
-### `sh_client_command`
+### `toolbox_client_command`
 
 Runs a command on the client ( activator )
 
@@ -27,7 +36,7 @@ Inputs:
 
 - `InExecute` - runs a command on the client ( works for players only )
 
-### `sh_server_command`
+### `toolbox_server_command`
 
 Runs a command on the server
 
@@ -35,7 +44,7 @@ Inputs:
 
 - `InExecute` - runs a command on the server
 
-### `sh_gravity`
+### `toolbox_gravity`
 
 Sets the gravity of the map
 
@@ -49,7 +58,32 @@ Key-Values:
 - `direction` - the direction of gravity ( default: `0 0 -1` )
 - `force` - the force of gravity ( default: `600` )
 
-#### `sh_entity_setup`
+### `toolbox_timescale`
+
+Changes the game time scale
+
+Inputs:
+
+- `InScale` - sets the time scale ( default: `1` )
+
+Key-Values:
+
+- `scale` - initial time scale ( default: `1` )
+
+### `toolbox_message`
+
+Prints a message to a player or globally via `PrintMessage`
+
+Inputs:
+
+- `InPrint` - prints to the activator (players only)
+- `InPrintGlobal` - prints to every player
+
+Key-Values:
+
+- `message_type` - `1` notify, `2` console, `3` talk (default), `4` center
+
+### `toolbox_entity_setup`
 
 Sets up an entity ( activator )
 
