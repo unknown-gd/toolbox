@@ -46,12 +46,17 @@ function ENT:Initialize()
 end
 
 function ENT:Apply()
-    local direction = self.m_vDirection
-    if direction == nil then
-        return
-    end
+    physenv.SetGravity( (self.m_vDirection or Vector( 0, 0, -1 )) * (self.m_vForce or cvars.Number( "sv_gravity", 600 )) )
 
-    physenv.SetGravity( direction * (self.m_vForce or cvars.Number( "sv_gravity", 600 )) )
+    for _, entity in ents.Iterator() do
+        ---@cast entity Entity
+        for i = 0, entity:GetPhysicsObjectCount() - 1, 1 do
+            local phys = entity:GetPhysicsObjectNum( i )
+            if phys ~= nil and phys:IsValid() then
+                phys:Wake()
+            end
+        end
+    end
 end
 
 function ENT:InDirection( _, _, value )
